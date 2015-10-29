@@ -23,7 +23,42 @@
 # SOFTWARE.
 # 
 
-git stash
-git pull --rebase
+git stash >> /dev/null 2>&1
+git pull --rebase >> /dev/null 2>&1
+if [ $? -gt 0 ]
+then
+    GIT_PROXY=/tmp/git
+    OLD_PATH=$PATH
+    PATH=$(dirname $GIT_PROXY):$PATH
+
+    cat > $GIT_PROXY <<DONE
+#!/bin/sh
+GIT=$(which git)
+echo "run \$GIT \$@"
+\$GIT \$@
+if [ \$? -eq 0 ] && [ \$1 == "rebase" ]
+then
+    ps -ef | grep \$\$ | awk '{print \$3}' | head -n 1 | xargs kill -9
+fi
+DONE
+
+    chmod +x $GIT_PROXY
+
+    echo
+    echo "There was an conflict with the rebase. The git status will now be shown to you"
+    echo "and you will be given an oppurtunity to resolve issues."
+    echo
+    echo "When you are finished resolving issues the change will be pushed"
+    echo
+    echo "Press 'Enter' to proceed"
+    echo
+
+    read
+
+    git status
+    $SHELL
+    rm $GIT_PROXY
+    PATH=$OLD_PATH
+fi
 git push
-git stash pop
+git stash pop >> /dev/null 2>&1
