@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/jhutchins/git-rebase-push.svg?style=svg)](https://circleci.com/gh/jhutchins/git-rebase-push)
+[![Circle CI](https://circleci.com/gh/jhutchins/git-rebase-push.svg?style=shield)](https://circleci.com/gh/jhutchins/git-rebase-push)
 
 #About
 
@@ -20,7 +20,7 @@ This will stash any local changes that you have, pull, rebase your changes on to
 access to a console if there was a merge conflict, push your changes and unstash
 
 #Install
-If your on Mac you can install with homebrew by running
+If you're on Mac you can install with homebrew by running
 ```
 brew tap jhutchins/tap
 brew install git-rebase-push
