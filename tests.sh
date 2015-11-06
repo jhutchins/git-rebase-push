@@ -59,6 +59,14 @@ setup() {
 
     # Create different contrib repos
     setup_repo "clone1"
+
+    cd clone1
+    echo "a" >> a
+    git add a
+    git commit -am "Add a"
+    git push origin master
+    cd ..
+
     setup_repo "clone2"
 }
 
@@ -103,32 +111,22 @@ run_test() {
     then
         printf " [failure]\n"
         RESULT=1
-        FAILURE=$[FAILURE + 1]
+        FAILURE=$(expr $FAILURE + 1)
     else
         printf " [success]\n"
-        SUCCESS=$[SUCCESS + 1]
+        SUCCESS=$(expr $SUCCESS + 1)
     fi
     teardown >> /dev/null 2>&1
 }
 
 simple_conflict_setup() {
-    cd clone1
-
-    echo "a" >> a
-    git add a
-    git commit -am "Add a"
-    git push
-
-    cd ../clone2
-    git pull
-
+    cd clone2
     echo "b" > b
     git add b
     git commit -am "Add b"
     git push
 
     cd ../clone1
-
     echo "c" > c
     git add c
     git commit -am "Add c"
@@ -143,23 +141,13 @@ simple_conflict() {
 }
 
 complex_conflict_setup() {
-    cd clone1
-
-    echo "a" >> a
-    git add a
-    git commit -am "Add a"
-    git push
-
-    cd ../clone2
-    git pull
-
+    cd clone2
     echo "b" >> a
     git add a
     git commit -am "Modify a"
     git push
 
     cd ../clone1
-
     echo "c" >> a
     git add a
     git commit -am "Modify a"
