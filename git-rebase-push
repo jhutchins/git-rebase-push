@@ -62,3 +62,4 @@ DONE
 fi
 git push
 git stash pop >> /dev/null 2>&1
+exit 0
