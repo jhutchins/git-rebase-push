@@ -28,14 +28,14 @@ git pull --rebase >> /dev/null 2>&1
 if [ $? -gt 0 ]
 then
     GIT_PROXY=/tmp/git
+    GIT=$(which git)
     OLD_PATH=$PATH
     PATH=$(dirname $GIT_PROXY):$PATH
 
     cat > $GIT_PROXY <<DONE
-#!/bin/sh
-GIT=$(which git)
-echo "run \$GIT \$@"
-\$GIT \$@
+#!/bin/bash
+echo "run $GIT \$@"
+$GIT \$@
 if [ \$? -eq 0 ] && [ \$1 == "rebase" ]
 then
     ps -ef | grep \$\$ | awk '{print \$3}' | head -n 1 | xargs kill -9

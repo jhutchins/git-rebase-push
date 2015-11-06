@@ -43,6 +43,7 @@ setup_repo() {
     cd $1
     git config --local user.email "you@example.com"
     git config --local user.name "Your Name"
+    git config --local push.default matching
     cd ..
 }
 
