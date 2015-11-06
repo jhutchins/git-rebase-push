@@ -91,11 +91,10 @@ teardown() {
 run_test() {
     local str="Testing $1"
     printf "$str"
-    local cnt;
-    let cnt=24-${#str}
+    local cnt=$(expr 24 - ${#str})
     while [ $cnt -gt 0 ]; do
         printf " "
-        let cnt=cnt-1
+        cnt=$(expr $cnt - 1)
     done
     setup >> /dev/null 2>&1
     $1
